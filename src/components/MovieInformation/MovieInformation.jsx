@@ -27,8 +27,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import useStyles from "./styles";
 import genreIcons from "../../assets/genres";
+import { MovieList } from "..";
 
-import { useGetMovieQuery } from "../../services/TMDB";
+import {
+  useGetMovieQuery,
+  useGetRecommendationsQuery,
+} from "../../services/TMDB";
 
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 
@@ -37,12 +41,19 @@ const MovieInformation = () => {
   const { data, isFetching, error } = useGetMovieQuery(id);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { data: recommendations, isFetching: isRecommendationsFetching } =
+    useGetRecommendationsQuery({
+      list: "/recommendations",
+      movie_id: id,
+    });
+
   const isMovieFavorited = true;
   const isMovieWatchlisted = false;
 
   const addToFavorites = () => {};
 
   const addToWatchlist = () => {};
+  console.log(recommendations);
 
   if (isFetching) {
     <Box display="flex" justifyContent="center" alignItems="center">
@@ -227,6 +238,17 @@ const MovieInformation = () => {
           </div>
         </Grid>
       </Grid>
+
+      <Box marginTop="5rem" width="100%">
+        <Typography variant="h3" gutterBottom align="center">
+          You might also like
+        </Typography>
+        {recommendations ? (
+          <MovieList movies={recommendations} numberOfMovies={12} />
+        ) : (
+          <Box>Sorry, nothing was found</Box>
+        )}
+      </Box>
     </Grid>
   );
 };
