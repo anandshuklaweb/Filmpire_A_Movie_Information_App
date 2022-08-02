@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   Typography,
@@ -41,6 +41,7 @@ const MovieInformation = () => {
   const { data, isFetching, error } = useGetMovieQuery(id);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
   const { data: recommendations, isFetching: isRecommendationsFetching } =
     useGetRecommendationsQuery({
       list: "/recommendations",
@@ -53,7 +54,6 @@ const MovieInformation = () => {
   const addToFavorites = () => {};
 
   const addToWatchlist = () => {};
-  console.log(recommendations);
 
   if (isFetching) {
     <Box display="flex" justifyContent="center" alignItems="center">
@@ -196,7 +196,11 @@ const MovieInformation = () => {
                 >
                   IMDB
                 </Button>
-                <Button href="#" endIcon={<Theaters />} onClick={() => {}}>
+                <Button
+                  href="#"
+                  endIcon={<Theaters />}
+                  onClick={() => setOpen(true)}
+                >
                   Trailer
                 </Button>
               </ButtonGroup>
@@ -238,7 +242,6 @@ const MovieInformation = () => {
           </div>
         </Grid>
       </Grid>
-
       <Box marginTop="5rem" width="100%">
         <Typography variant="h3" gutterBottom align="center">
           You might also like
@@ -249,6 +252,26 @@ const MovieInformation = () => {
           <Box>Sorry, nothing was found</Box>
         )}
       </Box>
+
+      {console.log(data?.videos?.results[0].key)}
+
+      {data?.videos?.results?.length > 0 && (
+        <Modal
+          closeAfterTransition
+          className={classes.modal}
+          open={open}
+          onClose={() => setOpen(false)}
+        >
+          <iframe
+            autoPlay
+            className={classes.video}
+            frameBorder="0"
+            title="Trailer"
+            src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+            allow="autoplay"
+          />
+        </Modal>
+      )}
     </Grid>
   );
 };
