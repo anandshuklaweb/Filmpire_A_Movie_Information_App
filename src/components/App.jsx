@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import useStyles from "./styles";
 
-import { Actors, MovieInformation, Movies, NavBar, Navbar, Profile } from "./";
+import { Actors, MovieInformation, Movies, NavBar, Profile } from "./";
 
 const App = () => {
   const classes = useStyles();
