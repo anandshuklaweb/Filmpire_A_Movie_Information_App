@@ -9,8 +9,8 @@ export default makeStyles((theme) => ({
     justifyContent: "space-between",
     marginLeft: "240px",
     [theme.breakpoints.down("sm")]: {
-      display: "none",
-      marginLeft: "10px",
+      flexWrap: "wrap",
+      marginLeft: "0px",
     },
   },
   menuButton: {
